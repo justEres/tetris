@@ -1,5 +1,5 @@
 use crate::colors::*;
-use macroquad::text::{Font, TextParams, draw_text, draw_text_ex, load_ttf_font_from_bytes};
+use macroquad::text::{Font, TextParams,draw_text_ex, load_ttf_font_from_bytes};
 
 pub struct Ui {
     font: Font,
