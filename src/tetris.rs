@@ -1,18 +1,13 @@
-use crate::ui::draw_ui;
-use crate::colors::*;
+use crate::{colors::*, ui::Ui};
 use macroquad::prelude::*;
 
-
 #[macroquad::main("Tetris - by Erik & Justus")]
-pub async fn main(){
-
-    loop{
+pub async fn main() {
+    let ui = Ui::new();
+    loop {
         clear_background(SKY);
-        draw_ui();
-
-
+        ui.draw();
 
         next_frame().await
     }
-    
 }
