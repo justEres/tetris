@@ -1,5 +1,5 @@
 use crate::{colors::*, tetris_constants::{self, BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE}};
-use macroquad::{miniquad::window::set_window_size, shapes::{draw_circle, draw_rectangle}, text::{draw_text_ex, load_ttf_font_from_bytes, Font, TextParams}, window::Conf};
+use macroquad::{shapes::{draw_circle, draw_rectangle}, text::{draw_text_ex, load_ttf_font_from_bytes, Font, TextParams}, window::Conf};
 
 pub struct Ui {
     font: Font,
@@ -12,7 +12,6 @@ const BOARD_POSITION: (f32,f32) = (TILE_SIZE as f32 ,TILE_SIZE as f32);
 
 impl Ui {
     pub fn draw(&self) {
-        
         draw_rounded_rect(BOARD_POSITION.0, BOARD_POSITION.1, tetris_constants::BOARD_WIDTH as f32 + 2. * INNER_OFFSET, tetris_constants::BOARD_HEIGHT as f32 + 2. * INNER_OFFSET,10. , BLUE);
         draw_text_ex(
             "HELLO",
@@ -26,11 +25,6 @@ impl Ui {
         );
     }
     pub fn new() -> Ui {
-
-        
-        
-        
-        
         Ui {
             font: load_ttf_font_from_bytes(FONT_FILE).expect("couldnt load font"),
         }
