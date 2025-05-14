@@ -1,5 +1,3 @@
-
-
 pub const TILE_SIZE: usize = 30;
 
 pub const BOARD_HEIGHT: usize = TILE_SIZE * 20;

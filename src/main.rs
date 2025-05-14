@@ -1,11 +1,9 @@
-
-
+mod board;
 mod colors;
 mod tetris;
-mod ui;
 mod tetris_constants;
 mod tetromino;
-mod board;
+mod ui;
 
 fn main() {
     tetris::main();
