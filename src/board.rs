@@ -6,8 +6,8 @@ use macroquad::{
 };
 
 use crate::{
-    colors::{BLACK, BLUE, CYAN, ORANGE, PURPLE, RED, SKY},
-    tetris_constants::{self, BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE},
+    colors::{BLACK, SKY},
+    tetris_constants::{BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE},
     tetromino::Tetromino,
 };
 

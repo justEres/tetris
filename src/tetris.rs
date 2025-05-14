@@ -1,6 +1,6 @@
 use crate::ui::window_conf;
 use crate::{board::Board, colors::*, ui::Ui};
-use macroquad::{prelude::*, rand::gen_range};
+use macroquad::prelude::*;
 
 #[macroquad::main(window_conf)]
 pub async fn main() {

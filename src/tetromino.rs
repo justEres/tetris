@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 
-use macroquad::{color::Color, rand::ChooseRandom};
+use macroquad::color::Color;
 use rand::Rng;
 
-use crate::colors::{ORANGE, random_color};
+use crate::colors::random_color;
 
 pub enum TetrominoType {
     I,
