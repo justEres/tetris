@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use macroquad::{color::Color, shapes::{draw_rectangle, draw_rectangle_lines}};
 
-use crate::{colors::{BLACK, BLUE, ORANGE, PURPLE, RED}, tetris_constants::TILE_SIZE, tetromino::Tetromino};
+use crate::{colors::{BLACK, BLUE, CYAN, ORANGE, PURPLE, RED, SKY}, tetris_constants::{self, BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE}, tetromino::Tetromino};
 
 
 
@@ -21,6 +21,7 @@ impl Board{
     }
 
     pub fn draw(&self) {
+        draw_rectangle(self.draw_offset.0 as f32 - 1., self.draw_offset.1 as f32 - 1., BOARD_WIDTH as f32 + 2., BOARD_HEIGHT as f32 + 2., SKY);
         for tile in self.ground_tiles.iter(){
             self.draw_single_tile(tile.0, tile.1);
         }
@@ -37,16 +38,5 @@ impl Board{
         draw_rectangle_lines((self.draw_offset.0 + pos.0 as u32 * TILE_SIZE as u32) as f32, (self.draw_offset.1 + pos.1 as u32 * TILE_SIZE as u32) as f32, TILE_SIZE as f32, TILE_SIZE as f32,LINE_THICKNESS, BLACK);
     }
 
-    pub fn test_tiles(&mut self){
-
-        
-
-        for x in 0..10{
-            for y in 0..20{
-                self.ground_tiles.insert((x,y), RED);
-            }
-        }
-        self.falling_tile = Some(Tetromino::new_block_tetromino());
-    }
 }
 

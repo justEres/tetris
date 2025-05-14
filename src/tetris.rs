@@ -6,11 +6,10 @@ use crate::ui::window_conf;
 pub async fn main() {
     let ui = Ui::new();
     let mut board = Board::new();
-    board.test_tiles();
+    
     
     loop {
-        
-        clear_background(SKY);
+        clear_background(DARK_GRAY);
         ui.draw();
         board.draw();
         next_frame().await
