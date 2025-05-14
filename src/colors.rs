@@ -18,3 +18,10 @@ pub const WHITE: Color = Color::from_hex(0xf4f4f4);
 pub const LIGHT_GRAY: Color = Color::from_hex(0x94b0c2);
 pub const GRAY: Color = Color::from_hex(0x566c86);
 pub const DARK_GRAY: Color = Color::from_hex(0x333c57);
+
+
+
+const POSSIBLE_COLORS: [Color; 9] = [PURPLE,RED,ORANGE,YELLOW,LIME,GREEN,TEAL,NAVY,BLUE];
+pub fn random_color() -> Color{
+    POSSIBLE_COLORS[macroquad::rand::gen_range(0, POSSIBLE_COLORS.len())]
+}
