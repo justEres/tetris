@@ -1,4 +1,5 @@
 use macroquad::color::Color;
+use rand::Rng;
 
 // Main palette colors
 
@@ -23,5 +24,6 @@ pub const DARK_GRAY: Color = Color::from_hex(0x333c57);
 
 const POSSIBLE_COLORS: [Color; 9] = [PURPLE,RED,ORANGE,YELLOW,LIME,GREEN,TEAL,NAVY,BLUE];
 pub fn random_color() -> Color{
-    POSSIBLE_COLORS[macroquad::rand::gen_range(0, POSSIBLE_COLORS.len())]
+    let mut rng = rand::rng();
+    POSSIBLE_COLORS[rng.random_range(0..POSSIBLE_COLORS.len())]
 }

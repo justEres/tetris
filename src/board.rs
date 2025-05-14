@@ -38,5 +38,11 @@ impl Board{
         draw_rectangle_lines((self.draw_offset.0 + pos.0 as u32 * TILE_SIZE as u32) as f32, (self.draw_offset.1 + pos.1 as u32 * TILE_SIZE as u32) as f32, TILE_SIZE as f32, TILE_SIZE as f32,LINE_THICKNESS, BLACK);
     }
 
+
+
+
+    pub fn test_tiles(&mut self){
+        self.falling_tile = Some(Tetromino::random_tetromino());
+    }
 }
 

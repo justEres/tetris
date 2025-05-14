@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
-use macroquad::{color::Color, prelude::rand, rand::ChooseRandom};
+use macroquad::{color::Color, rand::ChooseRandom};
+use rand::Rng;
 
 use crate::colors::{random_color, ORANGE};
 
@@ -22,13 +23,14 @@ pub struct Tetromino{
     pub color: Color,
 }
 
-const SPAWN_POSITION: (u8,u8) = (5,0);
+const SPAWN_POSITION: (u8,u8) = (4,1);
 
 impl Tetromino{
 
 
-    fn random_tetromino() -> Tetromino{
-        let varinant = &VARIANTS[macroquad::rand::gen_range(0, VARIANTS.len())];
+    pub fn random_tetromino() -> Tetromino{
+        let mut rng = rand::rng();
+        let varinant = &VARIANTS[rng.random_range(0..VARIANTS.len())];
         return Self::new_tetromino(random_color(), varinant);
     }
 
@@ -40,7 +42,7 @@ impl Tetromino{
             TetrominoType::J => HashSet::from([(0,-1),(0,0),(0,1),(-1,1)]),
             TetrominoType::L => HashSet::from([(0,-1),(0,0),(0,1),(1,1)]),
             TetrominoType::S => HashSet::from([(-1,1),(0,1),(0,0),(1,0)]),
-            TetrominoType::Z => HashSet::from([(-1,0),(0,1),(0,0),(1,-1)]),
+            TetrominoType::Z => HashSet::from([(-1,0),(0,0),(0,1),(1,1)]),
         };
         Tetromino { tiles, grid_position: SPAWN_POSITION, color}
     }

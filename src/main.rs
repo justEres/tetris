@@ -5,7 +5,7 @@ mod tetris;
 mod ui;
 mod tetris_constants;
 mod tetromino;
-mod game;
+mod board;
 
 fn main() {
     tetris::main();
