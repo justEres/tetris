@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use macroquad::{
     color::Color,
+    input::is_key_down,
     shapes::{draw_rectangle, draw_rectangle_lines},
     time::get_frame_time,
 };
@@ -17,7 +18,8 @@ pub struct Board {
     ground_tiles: HashMap<(u8, u8), Color>,
     pub falling_tile: Option<Tetromino>,
     fall_counter: f32,
-    fall_speed: u32,
+    pub fall_fast: bool,
+    pub score: u32,
 }
 
 impl Board {
@@ -28,7 +30,8 @@ impl Board {
             ground_tiles: HashMap::new(),
             falling_tile: None,
             fall_counter: 0.,
-            fall_speed: 1,
+            fall_fast: false,
+            score: 0,
         }
     }
 
@@ -104,7 +107,7 @@ impl Board {
 
     pub fn auto_move_tile_down(&mut self) {
         self.fall_counter += get_frame_time();
-        if self.fall_counter > 0.8 / self.fall_speed as f32 {
+        if self.fall_counter > if self.fall_fast { 0.08 } else { 0.6 } {
             self.fall_counter = 0.;
             if let Some(falling_tile) = &mut self.falling_tile {
                 falling_tile.grid_position.1 += 1;
@@ -188,11 +191,46 @@ impl Board {
         }
     }
 
-    pub fn clear_lines(&mut self){
-        for x in 19..0{
-            for y in 0..9{
-                todo!();
+    fn clear_line(&mut self, line: u8) {
+        let mut new_ground_tiles: HashMap<(u8, u8), Color> = HashMap::new();
+        for y in 0..line {
+            for x in 0..10 {
+                if let Some(color) = self.ground_tiles.get(&(x, y)) {
+                    new_ground_tiles.insert((x, y + 1), *color);
+                }
             }
+        }
+        for y in line + 1..20 {
+            for x in 0..10 {
+                if let Some(color) = self.ground_tiles.get(&(x, y)) {
+                    new_ground_tiles.insert((x, y), *color);
+                }
+            }
+        }
+        self.ground_tiles = new_ground_tiles;
+        self.score += 10;
+    }
+
+    fn get_full_lines(&mut self) -> Vec<u8> {
+        if is_key_down(macroquad::input::KeyCode::Space) {
+            dbg!(self.ground_tiles.iter());
+        }
+        let mut full_lines = Vec::new();
+        'line: for y in 0..20 {
+            for x in 0..10 {
+                if !self.ground_tiles.contains_key(&(x, y)) {
+                    continue 'line;
+                }
+            }
+            full_lines.push(y);
+        }
+        return full_lines;
+    }
+
+    pub fn clear_lines_if_possible(&mut self) {
+        let lines = self.get_full_lines();
+        for line in lines {
+            self.clear_line(line);
         }
     }
 }

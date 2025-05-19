@@ -5,7 +5,6 @@ use crate::{
 use macroquad::{
     shapes::{draw_circle, draw_rectangle},
     text::{Font, TextParams, draw_text_ex, load_ttf_font_from_bytes},
-    time::draw_fps,
     window::Conf,
 };
 
@@ -18,7 +17,7 @@ const INNER_OFFSET: f32 = TILE_SIZE as f32;
 const BOARD_POSITION: (f32, f32) = (TILE_SIZE as f32, TILE_SIZE as f32);
 
 impl Ui {
-    pub fn draw(&self) {
+    pub fn draw(&self, score: u32) {
         draw_rounded_rect(
             BOARD_POSITION.0,
             BOARD_POSITION.1,
@@ -28,16 +27,16 @@ impl Ui {
             BLUE,
         );
         draw_text_ex(
-            "HELLO",
-            20.0,
-            20.0,
+            &format!("SCORE: {}", score),
+            (TILE_SIZE * 15) as f32,
+            (TILE_SIZE * 2) as f32,
             TextParams {
                 font: Some(&self.font),
-                color: BLACK,
+                color: WHITE,
                 ..Default::default()
             },
         );
-        draw_fps();
+        //draw_fps();
     }
     pub fn new() -> Ui {
         Ui {

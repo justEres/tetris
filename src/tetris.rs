@@ -11,11 +11,12 @@ pub async fn main() {
 
     loop {
         clear_background(DARK_GRAY);
-        ui.draw();
+        ui.draw(board.score);
 
         board.auto_move_tile_down();
         controls(&mut board);
         board.draw();
+        board.clear_lines_if_possible();
         next_frame().await
     }
 }
