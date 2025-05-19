@@ -13,7 +13,7 @@ pub async fn main() {
         clear_background(DARK_GRAY);
         ui.draw();
 
-        board.move_tile_down();
+        board.auto_move_tile_down();
         controls(&mut board);
         board.draw();
         next_frame().await

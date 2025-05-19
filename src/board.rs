@@ -17,6 +17,7 @@ pub struct Board {
     ground_tiles: HashMap<(u8, u8), Color>,
     pub falling_tile: Option<Tetromino>,
     fall_counter: f32,
+    fall_speed: u32,
 }
 
 impl Board {
@@ -27,6 +28,7 @@ impl Board {
             ground_tiles: HashMap::new(),
             falling_tile: None,
             fall_counter: 0.,
+            fall_speed: 1,
         }
     }
 
@@ -100,9 +102,9 @@ impl Board {
         }
     }
 
-    pub fn move_tile_down(&mut self) {
+    pub fn auto_move_tile_down(&mut self) {
         self.fall_counter += get_frame_time();
-        if self.fall_counter > 0.1 {
+        if self.fall_counter > 0.8 / self.fall_speed as f32 {
             self.fall_counter = 0.;
             if let Some(falling_tile) = &mut self.falling_tile {
                 falling_tile.grid_position.1 += 1;
@@ -112,6 +114,18 @@ impl Board {
                     falling_tile.grid_position.1 -= 1;
                     self.dissolve_falling_tile();
                 }
+            }
+        }
+    }
+
+    pub fn move_tile_down(&mut self) {
+        if let Some(falling_tile) = &mut self.falling_tile {
+            falling_tile.grid_position.1 += 1;
+        }
+        if self.check_for_collision() {
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.grid_position.1 -= 1;
+                self.dissolve_falling_tile();
             }
         }
     }
@@ -138,6 +152,27 @@ impl Board {
         }
     }
 
+    pub fn try_rotate_tile_right(&mut self) {
+        if let Some(falling_tile) = &mut self.falling_tile {
+            falling_tile.rotate_right();
+        }
+        if self.check_for_collision() {
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.rotate_left();
+            }
+        }
+    }
+    pub fn try_rotate_tile_left(&mut self) {
+        if let Some(falling_tile) = &mut self.falling_tile {
+            falling_tile.rotate_left();
+        }
+        if self.check_for_collision() {
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.rotate_right();
+            }
+        }
+    }
+
     pub fn dissolve_falling_tile(&mut self) {
         if let Some(falling_tile) = &self.falling_tile {
             for tile in falling_tile.tiles.iter() {
@@ -150,6 +185,14 @@ impl Board {
                 );
             }
             self.new_random_falling_tile();
+        }
+    }
+
+    pub fn clear_lines(&mut self){
+        for x in 19..0{
+            for y in 0..9{
+                todo!();
+            }
         }
     }
 }

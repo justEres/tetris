@@ -55,4 +55,20 @@ impl Tetromino {
             color,
         }
     }
+
+    pub fn rotate_right(&mut self) {
+        let mut new_tiles: HashSet<(i8, i8)> = HashSet::new();
+        for tile in self.tiles.iter() {
+            new_tiles.insert((tile.1, -tile.0));
+        }
+        self.tiles = new_tiles;
+    }
+
+    pub fn rotate_left(&mut self) {
+        let mut new_tiles: HashSet<(i8, i8)> = HashSet::new();
+        for tile in self.tiles.iter() {
+            new_tiles.insert((-tile.1, tile.0));
+        }
+        self.tiles = new_tiles;
+    }
 }

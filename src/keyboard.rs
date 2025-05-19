@@ -9,4 +9,13 @@ pub fn controls(board: &mut Board) {
     if is_key_pressed(KeyCode::Right) {
         board.try_move_tile_right();
     }
+    if is_key_pressed(KeyCode::Down) {
+        board.move_tile_down();
+    }
+    if is_key_pressed(KeyCode::E) {
+        board.try_rotate_tile_right();
+    }
+    if is_key_pressed(KeyCode::Q) {
+        board.try_rotate_tile_left();
+    }
 }
