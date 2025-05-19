@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use macroquad::{
     color::Color,
     shapes::{draw_rectangle, draw_rectangle_lines},
+    time::get_frame_time,
 };
 
 use crate::{
@@ -15,6 +16,7 @@ pub struct Board {
     draw_offset: (u32, u32),
     ground_tiles: HashMap<(u8, u8), Color>,
     pub falling_tile: Option<Tetromino>,
+    fall_counter: f32,
 }
 
 impl Board {
@@ -24,6 +26,7 @@ impl Board {
             draw_offset,
             ground_tiles: HashMap::new(),
             falling_tile: None,
+            fall_counter: 0.,
         }
     }
 
@@ -73,14 +76,14 @@ impl Board {
     pub fn check_for_collision(&self) -> bool {
         if let Some(falling_tile) = &self.falling_tile {
             for tile in &falling_tile.tiles {
-                if falling_tile.grid_position.0 + (tile.0 as u8) >= 9 {
+                if falling_tile.grid_position.0 + (tile.0 as u8) >= 10 {
                     return true;
                 }
-                if falling_tile.grid_position.1 + (tile.1 as u8) >= 19 {
+                if falling_tile.grid_position.1 + (tile.1 as u8) >= 20 {
                     return true;
                 }
                 if self.ground_tiles.contains_key(&(
-                    falling_tile.grid_position.0 + tile.0 as u8,
+                    &falling_tile.grid_position.0 + tile.0 as u8,
                     &falling_tile.grid_position.1 + tile.1 as u8,
                 )) {
                     return true;
@@ -90,7 +93,63 @@ impl Board {
         return false;
     }
 
-    pub fn test_tiles(&mut self) {
+    pub fn new_random_falling_tile(&mut self) {
         self.falling_tile = Some(Tetromino::random_tetromino());
+        if self.check_for_collision() {
+            panic!()
+        }
+    }
+
+    pub fn move_tile_down(&mut self) {
+        self.fall_counter += get_frame_time();
+        if self.fall_counter > 0.1 {
+            self.fall_counter = 0.;
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.grid_position.1 += 1;
+            }
+            if self.check_for_collision() {
+                if let Some(falling_tile) = &mut self.falling_tile {
+                    falling_tile.grid_position.1 -= 1;
+                    self.dissolve_falling_tile();
+                }
+            }
+        }
+    }
+
+    pub fn try_move_tile_right(&mut self) {
+        if let Some(falling_tile) = &mut self.falling_tile {
+            falling_tile.grid_position.0 += 1;
+        }
+        if self.check_for_collision() {
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.grid_position.0 -= 1;
+            }
+        }
+    }
+
+    pub fn try_move_tile_left(&mut self) {
+        if let Some(falling_tile) = &mut self.falling_tile {
+            falling_tile.grid_position.0 -= 1;
+        }
+        if self.check_for_collision() {
+            if let Some(falling_tile) = &mut self.falling_tile {
+                falling_tile.grid_position.0 += 1;
+            }
+        }
+    }
+
+    pub fn dissolve_falling_tile(&mut self) {
+        if let Some(falling_tile) = &self.falling_tile {
+            for tile in falling_tile.tiles.iter() {
+                self.ground_tiles.insert(
+                    (
+                        (tile.0 + falling_tile.grid_position.0 as i8) as u8,
+                        (tile.1 + falling_tile.grid_position.1 as i8) as u8,
+                    ),
+                    falling_tile.color,
+                );
+            }
+            self.new_random_falling_tile();
+        }
     }
 }

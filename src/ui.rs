@@ -5,6 +5,7 @@ use crate::{
 use macroquad::{
     shapes::{draw_circle, draw_rectangle},
     text::{Font, TextParams, draw_text_ex, load_ttf_font_from_bytes},
+    time::draw_fps,
     window::Conf,
 };
 
@@ -36,6 +37,7 @@ impl Ui {
                 ..Default::default()
             },
         );
+        draw_fps();
     }
     pub fn new() -> Ui {
         Ui {

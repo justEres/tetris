@@ -1,3 +1,4 @@
+use crate::keyboard::controls;
 use crate::ui::window_conf;
 use crate::{board::Board, colors::*, ui::Ui};
 use macroquad::prelude::*;
@@ -6,27 +7,14 @@ use macroquad::prelude::*;
 pub async fn main() {
     let ui = Ui::new();
     let mut board = Board::new();
-    board.test_tiles();
+    board.new_random_falling_tile();
 
-    let mut fall_counter = 0.;
     loop {
-        fall_counter += get_frame_time();
-        if fall_counter > 0.5 {
-            fall_counter = 0.;
-            if !board.check_for_collision() {
-                if let Some(falling_tile) = &mut board.falling_tile {
-                    falling_tile.grid_position.1 += 1;
-                }
-            }
-        }
-
         clear_background(DARK_GRAY);
         ui.draw();
 
-        if is_key_pressed(KeyCode::Space) {
-            board.test_tiles();
-        }
-
+        board.move_tile_down();
+        controls(&mut board);
         board.draw();
         next_frame().await
     }
