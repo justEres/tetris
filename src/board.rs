@@ -121,18 +121,6 @@ impl Board {
         }
     }
 
-    pub fn move_tile_down(&mut self) {
-        if let Some(falling_tile) = &mut self.falling_tile {
-            falling_tile.grid_position.1 += 1;
-        }
-        if self.check_for_collision() {
-            if let Some(falling_tile) = &mut self.falling_tile {
-                falling_tile.grid_position.1 -= 1;
-                self.dissolve_falling_tile();
-            }
-        }
-    }
-
     pub fn try_move_tile_right(&mut self) {
         if let Some(falling_tile) = &mut self.falling_tile {
             falling_tile.grid_position.0 += 1;
