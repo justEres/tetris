@@ -70,15 +70,15 @@ impl Board {
         if let Some(tetromino) = &self.next_tetromino {
             for tile in &tetromino.tiles {
                 draw_rectangle(
-                    (screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32),
-                    (screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32),
+                    screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32,
+                    screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32,
                     TILE_SIZE as f32,
                     TILE_SIZE as f32,
                     tetromino.color,
                 );
                 draw_rectangle_lines(
-                    (screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32),
-                    (screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32),
+                    screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32,
+                    screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32,
                     TILE_SIZE as f32,
                     TILE_SIZE as f32,
                     LINE_THICKNESS,

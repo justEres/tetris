@@ -2,10 +2,8 @@ use crate::{
     board::Board,
     colors::*,
     tetris_constants::{self, BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE},
-    tetromino::{Tetromino, TetrominoType},
 };
 use macroquad::{
-    color::Color,
     shapes::{draw_circle, draw_rectangle},
     text::{Font, TextParams, draw_text_ex, load_ttf_font_from_bytes},
     window::Conf,
