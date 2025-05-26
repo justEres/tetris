@@ -1,8 +1,11 @@
 use crate::{
+    board::Board,
     colors::*,
     tetris_constants::{self, BOARD_HEIGHT, BOARD_WIDTH, TILE_SIZE},
+    tetromino::{Tetromino, TetrominoType},
 };
 use macroquad::{
+    color::Color,
     shapes::{draw_circle, draw_rectangle},
     text::{Font, TextParams, draw_text_ex, load_ttf_font_from_bytes},
     window::Conf,
@@ -15,6 +18,7 @@ pub struct Ui {
 const FONT_FILE: &[u8] = include_bytes!("../assets/font.ttf");
 const INNER_OFFSET: f32 = TILE_SIZE as f32;
 const BOARD_POSITION: (f32, f32) = (TILE_SIZE as f32, TILE_SIZE as f32);
+const NEXT_TILE_OFFSET: (f32, f32) = (TILE_SIZE as f32 * 17., TILE_SIZE as f32 * 10.);
 
 impl Ui {
     pub fn draw(&self, score: u32) {
@@ -37,11 +41,32 @@ impl Ui {
             },
         );
         //draw_fps();
+        draw_text_ex(
+            "NEXT TETROMINO:",
+            NEXT_TILE_OFFSET.0 - 2. * TILE_SIZE as f32,
+            NEXT_TILE_OFFSET.1 - 3. * TILE_SIZE as f32,
+            TextParams {
+                font: Some(&self.font),
+                color: WHITE,
+                ..Default::default()
+            },
+        );
     }
     pub fn new() -> Ui {
         Ui {
             font: load_ttf_font_from_bytes(FONT_FILE).expect("couldnt load font"),
         }
+    }
+    pub fn draw_next_tile(board: &Board) {
+        draw_rounded_rect(
+            NEXT_TILE_OFFSET.0 - 2. * TILE_SIZE as f32,
+            NEXT_TILE_OFFSET.1 - 2. * TILE_SIZE as f32,
+            6. * TILE_SIZE as f32,
+            5. * TILE_SIZE as f32,
+            10.,
+            BLUE,
+        );
+        board.draw_next_tile(&NEXT_TILE_OFFSET);
     }
 }
 

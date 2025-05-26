@@ -5,6 +5,7 @@ use rand::Rng;
 
 use crate::colors::random_color;
 
+#[derive(Clone, Copy)]
 pub enum TetrominoType {
     I,
     O,
@@ -24,6 +25,7 @@ const VARIANTS: [TetrominoType; 7] = [
     TetrominoType::Z,
 ];
 
+#[derive(Clone)]
 pub struct Tetromino {
     pub tiles: HashSet<(i8, i8)>,
     pub grid_position: (u8, u8),
@@ -33,13 +35,13 @@ pub struct Tetromino {
 const SPAWN_POSITION: (u8, u8) = (4, 1);
 
 impl Tetromino {
-    pub fn random_tetromino() -> Tetromino {
+    pub fn random_tetromino() -> (TetrominoType, Color) {
         let mut rng = rand::rng();
         let varinant = &VARIANTS[rng.random_range(0..VARIANTS.len())];
-        return Self::new_tetromino(random_color(), varinant);
+        return (*varinant, random_color());
     }
 
-    fn new_tetromino(color: Color, tetromino_type: &TetrominoType) -> Tetromino {
+    pub fn new_tetromino(color: Color, tetromino_type: &TetrominoType) -> Tetromino {
         let tiles: HashSet<(i8, i8)> = match tetromino_type {
             TetrominoType::I => HashSet::from([(0, 0), (1, 0), (0, 1), (1, 1)]),
             TetrominoType::O => HashSet::from([(-1, 0), (0, 0), (1, 0), (2, 0)]),

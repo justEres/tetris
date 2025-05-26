@@ -20,7 +20,10 @@ pub struct Board {
     fall_counter: f32,
     pub fall_fast: bool,
     pub score: u32,
+    pub next_tetromino: Option<Tetromino>,
 }
+
+const LINE_THICKNESS: f32 = 2.;
 
 impl Board {
     pub fn new() -> Board {
@@ -32,6 +35,10 @@ impl Board {
             fall_counter: 0.,
             fall_fast: false,
             score: 0,
+            next_tetromino: {
+                let new_tetromino = Tetromino::random_tetromino();
+                Some(Tetromino::new_tetromino(new_tetromino.1, &new_tetromino.0))
+            },
         }
     }
 
@@ -59,8 +66,29 @@ impl Board {
         }
     }
 
+    pub fn draw_next_tile(&self, screen_pos: &(f32, f32)) {
+        if let Some(tetromino) = &self.next_tetromino {
+            for tile in &tetromino.tiles {
+                draw_rectangle(
+                    (screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32),
+                    (screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32),
+                    TILE_SIZE as f32,
+                    TILE_SIZE as f32,
+                    tetromino.color,
+                );
+                draw_rectangle_lines(
+                    (screen_pos.0 + tile.0 as f32 * TILE_SIZE as f32),
+                    (screen_pos.1 + tile.1 as f32 * TILE_SIZE as f32),
+                    TILE_SIZE as f32,
+                    TILE_SIZE as f32,
+                    LINE_THICKNESS,
+                    BLACK,
+                );
+            }
+        }
+    }
+
     fn draw_single_tile(&self, pos: &(u8, u8), color: &Color) {
-        const LINE_THICKNESS: f32 = 2.;
         draw_rectangle(
             (self.draw_offset.0 + pos.0 as u32 * TILE_SIZE as u32) as f32,
             (self.draw_offset.1 + pos.1 as u32 * TILE_SIZE as u32) as f32,
@@ -98,10 +126,12 @@ impl Board {
         return false;
     }
 
-    pub fn new_random_falling_tile(&mut self) {
-        self.falling_tile = Some(Tetromino::random_tetromino());
+    pub fn next_tetromino(&mut self) {
+        self.falling_tile = self.next_tetromino.clone();
+        let new_tetromino = Tetromino::random_tetromino();
+        self.next_tetromino = Some(Tetromino::new_tetromino(new_tetromino.1, &new_tetromino.0));
         if self.check_for_collision() {
-            panic!()
+            panic!();
         }
     }
 
@@ -175,7 +205,7 @@ impl Board {
                     falling_tile.color,
                 );
             }
-            self.new_random_falling_tile();
+            self.next_tetromino();
         }
     }
 
